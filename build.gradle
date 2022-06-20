@@ -1,0 +1,96 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    id 'java'
+}
+
+group = 'com.smcom.control.api'
+version = '1.0.0'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'org.jetbrains:annotations:20.1.0'
+    compileOnly 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+    implementation group: 'com.querydsl', name: 'querydsl-core'
+    implementation group: 'com.querydsl', name: 'querydsl-jpa'
+    implementation group: 'com.querydsl', name: 'querydsl-apt'
+    implementation group: 'com.querydsl', name: 'querydsl-codegen'
+
+    compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-core'
+    compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-annotations'
+    compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+    compileOnly group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    implementation 'commons-io:commons-io:2.8.0'
+    implementation 'commons-fileupload:commons-fileupload:1.4'
+
+    implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
+
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.12'
+    implementation group: 'org.asteriskjava', name: 'asterisk-java', version: '3.24.0'
+    implementation 'com.opencsv:opencsv:5.0'
+
+    implementation 'org.kurento:kurento-jsonrpc-server:6.13.1'
+    implementation group: 'io.netty', name: 'netty-all', version: '4.1.51.Final'
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+
+    /* openvidu */
+    implementation 'io.openvidu:openvidu-java-client:2.22.0'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+//def querydslDir = "src/querydsl/generated"
+def querydslDir = "src/main/generated"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}

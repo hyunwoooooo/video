@@ -1,0 +1,42 @@
+server:
+  port: 5000
+  ssl:
+    enabled: true
+    key-store: classpath:openvidu-selfsigned.jks
+    key-store-password: openvidu
+    key-store-type: JKS
+    key-alias: openvidu-selfsigned
+
+openvidu.url: https://localhost:4443/
+openvidu.secret: MY_SECRET
+
+---
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/mysql?autoReconnect=true&characterEncoding=UTF-8
+    username: khw
+    password: a20307055!
+    hikari:
+      maximum-pool-size: 1
+      max-lifetime: 1800000
+      auto-commit: false
+      idle-timeout: 10000
+      leak-detection-threshold: 5000
+      validation-query: select 1
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  level:
+    root: error
+    com.example.video.api: debug
+
+#securityPath: /api/**
+securityPath: /**
